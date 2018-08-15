@@ -1,0 +1,33 @@
+version: '3'
+services:
+  backend:
+    build: 
+      context: .
+    links:
+      - 'db'
+    environment:
+      - MODE=DEV
+      - SECRET=HELLO_JWT
+    ports:
+      - '9000:9000'
+    command: nodemon app.js
+    networks:
+      - server-network
+    volumes:
+      - .:/app
+  db:
+    image: "mongo:3.6"
+    volumes:
+      - mongodb-data:/data/db
+    ports:
+      - '27017:27017'      
+    networks:
+      - server-network
+networks:
+  server-network:
+    driver: bridge
+volumes:
+  node_modules:
+    driver: local
+  mongodb-data:
+    driver: local
